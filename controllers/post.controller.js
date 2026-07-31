@@ -3,9 +3,17 @@ import User from "../models/user.model.js";
 
 export const fetchPosts = async (req, res) => {
   try {
-    const posts = await Post.find().populate("author", "name email");
+    const { userId } = req.query;
+
+    const query = {};
+    if (userId) {
+      query.author = userId;
+    }
+
+    const posts = await Post.find(query).populate("author", "name email");
 
     res.json({
+      count: posts.length,
       data: posts,
     });
   } catch (error) {
