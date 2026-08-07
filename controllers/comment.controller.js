@@ -26,22 +26,17 @@ export const fetchComments = async (req, res) => {
 
 export const fetchComment = async (req, res) => {
   try {
-    const { postId } = req.query;
+    const { id } = req.params;
 
-    if (!postId) {
-      return res.status(400).json({
-        message: "Please provide a postId as query parameter",
-      });
-    }
+    const post = await Post.findById(id).populate("author", "name email");
 
-    const post = await Post.findById(postId).populate("author", "name email");
     if (!post) {
       return res.status(404).json({
         message: "Post not found",
       });
     }
 
-    const comments = await Comment.find({ post: postId })
+    const comments = await Comment.find({ post: id })
       .select("-_id content author")
       .populate("author", "-_id name");
 
