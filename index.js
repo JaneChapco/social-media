@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import userRoutes from "./routes/user.routes.js";
 import postRoutes from "./routes/post.routes.js";
+import commentRoutes from "./routes/comment.routes.js";
 
 const { PORT, MONGODB_URL } = process.env;
 
@@ -12,6 +13,7 @@ app.use(express.urlencoded());
 app.use(express.json());
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
+app.use("/comments", commentRoutes);
 
 app.get("/", (req, res) => {
   res.json({
